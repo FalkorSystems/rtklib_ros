@@ -2,3 +2,11 @@ rtklib/build/
 rtklib/include/
 rtklib/lib/
 rtklib/src/
+
+rtk_node/bin
+rtk_node/build
+
+rtklib_samples/sample
+rtklib_samples/build
+
+
