@@ -2,6 +2,7 @@ rtklib/build/
 rtklib/include/
 rtklib/lib/
 rtklib/src/
+rtklib/bin/
 
 rtk_node/bin
 rtk_node/build

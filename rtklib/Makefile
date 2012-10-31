@@ -13,6 +13,8 @@ rtklib: $(SOURCE_DIR)/unpacked
 	cp $(SOURCE_DIR)/src/rtklib.h include
 	-mkdir src
 	cp -r $(SOURCE_DIR)/src/* src
+	cp $(SOURCE_DIR)/app/str2str/str2str.c src
+	cp $(SOURCE_DIR)/app/rtkrcv/rtkrcv.c src
 
 wipe: clean
 	-rm -rf src include lib

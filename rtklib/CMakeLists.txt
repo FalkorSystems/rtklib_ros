@@ -24,6 +24,7 @@ list(APPEND RTKLIB_SRCS ${PROJECT_SOURCE_DIR}/src/rtksvr.c
                         ${PROJECT_SOURCE_DIR}/src/lambda.c
                         ${PROJECT_SOURCE_DIR}/src/sbas.c
                         ${PROJECT_SOURCE_DIR}/src/stream.c
+			${PROJECT_SOURCE_DIR}/src/streamsvr.c
                         ${PROJECT_SOURCE_DIR}/src/rcvraw.c
                         ${PROJECT_SOURCE_DIR}/src/rtcm.c
                         ${PROJECT_SOURCE_DIR}/src/preceph.c
@@ -41,10 +42,13 @@ list(APPEND RTKLIB_SRCS ${PROJECT_SOURCE_DIR}/src/rtksvr.c
                         ${PROJECT_SOURCE_DIR}/src/rinex.c
                         ${PROJECT_SOURCE_DIR}/src/ionex.c)
 
-rosbuild_add_library(${PROJECT_NAME} ${RTKLIB_SRCS})
-target_link_libraries(${PROJECT_NAME} pthread lapack blas)
+#rosbuild_add_library(${PROJECT_NAME} ${RTKLIB_SRCS})
+#target_link_libraries(${PROJECT_NAME} pthread lapack blas)
 
 #rosbuild_add_boost_directories()
 #rosbuild_link_boost(${PROJECT_NAME} thread)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
+rosbuild_add_executable(bin/rtkrcv ${PROJECT_SOURCE_DIR}/src/rtkrcv.c ${RTKLIB_SRCS})
+target_link_libraries(bin/rtkrcv pthread lapack blas)
+
+rosbuild_add_executable(bin/str2str ${PROJECT_SOURCE_DIR}/src/str2str.c ${RTKLIB_SRCS})
+target_link_libraries(bin/str2str pthread lapack blas)
