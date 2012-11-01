@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="rtk_node" type="startrtkrcv.sh" name="rtkrcv" />
+  <node pkg="rtk_node" type="startrtk_node.sh" name="rtk_node" />
+</launch>
