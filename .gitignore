@@ -16,3 +16,5 @@ rtk_msgs/src/rtk_msgs
 
 *~
 
+*.pos
+rtkrcv.nav

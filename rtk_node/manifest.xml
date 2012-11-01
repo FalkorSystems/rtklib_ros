@@ -11,9 +11,9 @@
 
   <depend package="roscpp"/>
   <depend package="rospy"/>
-  <depend package="sensor_msgs"/>
   <depend package="rtklib"/>
   <depend package="rtklib_samples" />
+  <depend package="rtk_msgs" />
 
 </package>
 
