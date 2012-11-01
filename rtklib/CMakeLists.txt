@@ -15,6 +15,7 @@ set (CMAKE_C_FLAGS      "-DNFREQ=3 -Wall -Wno-missing-field-initializers -DLAPAC
 
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 include_directories(${PROJECT_SOURCE_DIR}/src/)
 set(RTKLIB_SRCS ${PROJECT_SOURCE_DIR}/src/rtkcmn.c)
 list(APPEND RTKLIB_SRCS ${PROJECT_SOURCE_DIR}/src/rtksvr.c
@@ -47,8 +48,8 @@ list(APPEND RTKLIB_SRCS ${PROJECT_SOURCE_DIR}/src/rtksvr.c
 
 #rosbuild_add_boost_directories()
 #rosbuild_link_boost(${PROJECT_NAME} thread)
-rosbuild_add_executable(bin/rtkrcv ${PROJECT_SOURCE_DIR}/src/rtkrcv.c ${RTKLIB_SRCS})
-target_link_libraries(bin/rtkrcv pthread lapack blas)
+rosbuild_add_executable(rtkrcv ${PROJECT_SOURCE_DIR}/src/rtkrcv.c ${RTKLIB_SRCS})
+target_link_libraries(rtkrcv pthread lapack blas)
 
-rosbuild_add_executable(bin/str2str ${PROJECT_SOURCE_DIR}/src/str2str.c ${RTKLIB_SRCS})
-target_link_libraries(bin/str2str pthread lapack blas)
+rosbuild_add_executable(str2str ${PROJECT_SOURCE_DIR}/src/str2str.c ${RTKLIB_SRCS})
+target_link_libraries(str2str pthread lapack blas)
