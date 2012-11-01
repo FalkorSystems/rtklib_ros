@@ -1,5 +1,5 @@
 #!/bin/sh
-PIPEFILENAME=/tmp/rtk-pipe
+PIPEFILENAME=${ROS_WORKSPACE}/sol1_pipe.pos
 if [ ! -p $PIPEFILENAME ]; then
     mkfifo $PIPEFILENAME
 fi
