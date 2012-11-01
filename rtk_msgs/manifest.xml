@@ -1,0 +1,14 @@
+<package>
+  <description brief="rtk_msgs">
+
+     rtk_msgs
+
+  </description>
+  <author>Sameer Parekh</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/rtk_msgs</url>
+
+</package>
+
+
