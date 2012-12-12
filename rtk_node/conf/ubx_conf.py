@@ -3,40 +3,23 @@ from serial import *
 import binascii
 import time
 
-## {{{ http://code.activestate.com/recipes/496969/ (r1)
-#convert string to hex
-def toHex(s):
-    lst = []
-    for ch in s:
-        hv = hex(ord(ch)).replace('0x', '')
-        if len(hv) == 1:
-            hv = '0'+hv
-        lst.append(hv)
-    
-    return reduce(lambda x,y:x+y, lst)
-
-#convert hex repr to string
-def toStr(s):
-    return s and chr(atoi(s[:2], base=16)) + toStr(s[2:]) or ''
-## end of http://code.activestate.com/recipes/496969/ }}}
-
 def to_binstr( hexstr ):
-    return binascii.unhexlify( ''.join( hexstr.split() ) )
+    return ''.join( hexstr.split() ).decode( 'hex' )
 
 def read_and_print( ser ):
     size = ser.inWaiting()
-    read = ser.read( size )
-    print "ack: " + toHex( read )
+    read_bytes = ser.read( size )
+    print "ack: " + read_bytes.encode( 'hex' )
 
 def send_cmd( ser, command ):
     cmd_str = to_binstr( command )
-    print "sending: " + toHex( cmd_str )
+    print "sending: " + cmd_str.encode( 'hex' )
     ser.write( cmd_str )
     time.sleep(1)
     read_and_print( ser )
 
 
-start_baud = 9600
+start_baud = 115200
 end_baud = 115200
 
 ser = Serial( '/dev/ttyO2', start_baud, timeout=1 )
