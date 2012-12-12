@@ -72,7 +72,7 @@ cmd = "B5 62 06 01 06 00 02 11 00 01 00 00 21 D9"
 send_cmd( ser, cmd )
 
 # Set rate to 10Hz
-cmd = "B5 62 06 08 06 00 64 00 05 00 01 00 7E 22"
+cmd = "B5 62 06 08 06 00 64 00 01 00 01 00 7A 12"
 send_cmd( ser, cmd )
 
 # Turn NMEA on, UBX off
