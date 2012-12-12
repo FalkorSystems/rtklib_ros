@@ -1,16 +1,42 @@
 #!/usr/bin/env python
 from serial import *
 import binascii
+import time
 
+## {{{ http://code.activestate.com/recipes/496969/ (r1)
+#convert string to hex
+def toHex(s):
+    lst = []
+    for ch in s:
+        hv = hex(ord(ch)).replace('0x', '')
+        if len(hv) == 1:
+            hv = '0'+hv
+        lst.append(hv)
+    
+    return reduce(lambda x,y:x+y, lst)
+
+#convert hex repr to string
+def toStr(s):
+    return s and chr(atoi(s[:2], base=16)) + toStr(s[2:]) or ''
+## end of http://code.activestate.com/recipes/496969/ }}}
 
 def to_binstr( hexstr ):
-    return binascii.unhexlify( join( hexstr.split() ) )
+    return binascii.unhexlify( ''.join( hexstr.split() ) )
+
+def read_and_print( ser ):
+    size = ser.inWaiting()
+    read = ser.read( size )
+    print "ack: " + toHex( read )
 
 def send_cmd( ser, command ):
     cmd_str = to_binstr( command )
+    print "sending: " + toHex( cmd_str )
     ser.write( cmd_str )
+    time.sleep(1)
+    read_and_print( ser )
 
-ser = Serial( '/dev/ttyO2', 9600, timeout=1 )
+
+ser = Serial( '/dev/ttyO2', 115200, timeout=1 )
 
 # Send port configuration command
 # USART1
@@ -20,6 +46,7 @@ ser = Serial( '/dev/ttyO2', 9600, timeout=1 )
 # Autobauding
 cmd = "B5 62 06 00 14 00 01 00 00 00 D0 08 00 00 00 C2 01 00 07 00 01 00 01 00 00 00 BF 76"
 send_cmd( ser, cmd )
+
 
 # Reconnect at 115200
 ser.close()
