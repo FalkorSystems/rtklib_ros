@@ -71,6 +71,18 @@ send_cmd( ser, cmd )
 cmd = "B5 62 06 01 06 00 02 11 00 01 00 00 21 D9"
 send_cmd( ser, cmd )
 
+# Set rate to 10Hz
+cmd = "B5 62 06 08 06 00 64 00 05 00 01 00 7E 22"
+send_cmd( ser, cmd )
+
+# Turn NMEA on, UBX off
+cmd_57600 = "B5 62 06 00 14 00 01 00 00 00 D0 08 00 00 00 E1 00 00 07 00 02 00 01 00 00 00 DE C7"
+cmd_115200 = "B5 62 06 00 14 00 01 00 00 00 D0 08 00 00 00 C2 01 00 07 00 02 00 01 00 00 00 C0 7C"
+if end_baud == 115200:
+    send_cmd( ser, cmd_115200 )
+else:
+    send_cmd( ser, cmd_57600 )
+
 # Save configuration to Flash
 cmd = "B5 62 06 09 0D 00 00 00 00 00 FF FF 00 00 00 00 00 00 03 1D AB"
 send_cmd( ser, cmd )
