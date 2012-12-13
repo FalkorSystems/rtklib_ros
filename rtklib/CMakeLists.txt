@@ -11,8 +11,11 @@ include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 
 rosbuild_init()
 
-set (CMAKE_C_FLAGS      "-DNFREQ=3 -Wall -Wno-missing-field-initializers -DLAPACK -O3 -ansi -pedantic")
+# For i386 Linux
+#set (CMAKE_C_FLAGS      "-DTRACE -DNFREQ=3 -Wall -Wno-missing-field-initializers -DLAPACK -O3 -ansi -pedantic")
 
+# For beagle
+set (CMAKE_C_FLAGS	"-DTRACE -mfpu=neon -mfloat-abi=hard -ffast-math -Wall -g -ansi -pedantic")
 
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
