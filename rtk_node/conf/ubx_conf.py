@@ -1,16 +1,28 @@
 #!/usr/bin/env python
 from serial import *
 import binascii
-
+import time
 
 def to_binstr( hexstr ):
-    return binascii.unhexlify( join( hexstr.split() ) )
+    return ''.join( hexstr.split() ).decode( 'hex' )
+
+def read_and_print( ser ):
+    size = ser.inWaiting()
+    read_bytes = ser.read( size )
+    print "ack: " + read_bytes.encode( 'hex' )
 
 def send_cmd( ser, command ):
     cmd_str = to_binstr( command )
+    print "sending: " + cmd_str.encode( 'hex' )
     ser.write( cmd_str )
+    time.sleep(1)
+    read_and_print( ser )
 
-ser = Serial( '/dev/ttyO2', 9600, timeout=1 )
+
+start_baud = 115200
+end_baud = 115200
+
+ser = Serial( '/dev/ttyO2', start_baud, timeout=1 )
 
 # Send port configuration command
 # USART1
@@ -18,13 +30,24 @@ ser = Serial( '/dev/ttyO2', 9600, timeout=1 )
 # 0 Out
 # 115200
 # Autobauding
-cmd = "B5 62 06 00 14 00 01 00 00 00 D0 08 00 00 00 C2 01 00 07 00 01 00 01 00 00 00 BF 76"
-send_cmd( ser, cmd )
+cmd_115200 = "B5 62 06 00 14 00 01 00 00 00 D0 08 00 00 00 C2 01 00 07 00 01 00 01 00 00 00 BF 76"
 
-# Reconnect at 115200
+
+# USART1
+# 0+1+2 In
+# 0 Out
+# 57600
+# Autobauding
+cmd_57600 = "B5 62 06 00 14 00 01 00 00 00 D0 08 00 00 00 E1 00 00 07 00 01 00 01 00 00 00 DD C1"
+
+if end_baud == 115200:
+    send_cmd( ser, cmd_115200 )
+else:
+    send_cmd( ser, cmd_57600 )
+
+# Reconnect at end_baud
 ser.close()
-
-ser = Serial( '/dev/ttyO2', 115200, timeout=1 )
+ser = Serial( '/dev/ttyO2', end_baud, timeout=1 )
 
 # Send port configuration command
 cmd = "B5 62 06 00 14 00 01 00 00 00 D0 08 00 00 00 C2 01 00 07 00 01 00 01 00 00 00 BF 76"
@@ -47,6 +70,18 @@ send_cmd( ser, cmd )
 # RXM-SFRB
 cmd = "B5 62 06 01 06 00 02 11 00 01 00 00 21 D9"
 send_cmd( ser, cmd )
+
+# Set rate to 10Hz
+cmd = "B5 62 06 08 06 00 64 00 01 00 01 00 7A 12"
+send_cmd( ser, cmd )
+
+# Turn NMEA on, UBX off
+cmd_57600 = "B5 62 06 00 14 00 01 00 00 00 D0 08 00 00 00 E1 00 00 07 00 02 00 01 00 00 00 DE C7"
+cmd_115200 = "B5 62 06 00 14 00 01 00 00 00 D0 08 00 00 00 C2 01 00 07 00 02 00 01 00 00 00 C0 7C"
+if end_baud == 115200:
+    send_cmd( ser, cmd_115200 )
+else:
+    send_cmd( ser, cmd_57600 )
 
 # Save configuration to Flash
 cmd = "B5 62 06 09 0D 00 00 00 00 00 FF FF 00 00 00 00 00 00 03 1D AB"
